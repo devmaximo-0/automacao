@@ -1,0 +1,28 @@
+from selenium import webdriver # biblioteca que importa a ferramenta webdriver, responsavel por conversar com o chrome
+from selenium.webdriver.common.by import By
+import time
+
+# configurar o navegador
+
+navegador = webdriver.Chrome()
+
+# definir o site
+
+navegador.get("https://mqs.motorola.com/home/home.aspx?enc=Q5gvSdpkrSm4+XI8x/jp2w1wsPbDh0YekbsarrLd0BllI2AjFThnszPMgqLzILBAAg8V2f+7THvCm/61SWLZn5TMWHfknkOVey/nFKNZABGgtwf94N8IzdVPYX5Zhi6D")
+
+# procurando elemento
+t = time.sleep(5)
+
+# entrando na aba "REPORTS"
+
+id = navegador.find_element(By.ID, "__tab_ctl00_main_tabMain_tabReports")
+id.click()
+
+two_time = time.sleep(5)
+
+navegador.get ("https://mqs.motorola.com/Collab_GridCpt/default.aspx?enc=Q5gvSdpkrSm4+XI8x/jp2w1wsPbDh0YekbsarrLd0BllI2AjFThnszPMgqLzILBAAg8V2f+7THvCm/61SWLZn5TMWHfknkOVey/nFKNZABGgtwf94N8IzdVPYX5Zhi6D"),time.sleep(5)
+
+horario = navegador.find_element(By.ID,"TextBox6")
+
+if horario == '00:00:00':
+    print
