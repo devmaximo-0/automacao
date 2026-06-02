@@ -1,5 +1,9 @@
 from selenium import webdriver # biblioteca que importa a ferramenta webdriver, responsavel por conversar com o chrome
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import time
 
 # configurar o navegador
@@ -11,18 +15,86 @@ navegador = webdriver.Chrome()
 navegador.get("https://mqs.motorola.com/home/home.aspx?enc=Q5gvSdpkrSm4+XI8x/jp2w1wsPbDh0YekbsarrLd0BllI2AjFThnszPMgqLzILBAAg8V2f+7THvCm/61SWLZn5TMWHfknkOVey/nFKNZABGgtwf94N8IzdVPYX5Zhi6D")
 
 # procurando elemento
-t = time.sleep(5)
+time.sleep(2)
 
 # entrando na aba "REPORTS"
 
-id = navegador.find_element(By.ID, "__tab_ctl00_main_tabMain_tabReports")
-id.click()
+reports_tab = navegador.find_element(By.ID, "__tab_ctl00_main_tabMain_tabReports")
+reports_tab.click()
 
-two_time = time.sleep(5)
+time.sleep(1)
 
-navegador.get ("https://mqs.motorola.com/Collab_GridCpt/default.aspx?enc=Q5gvSdpkrSm4+XI8x/jp2w1wsPbDh0YekbsarrLd0BllI2AjFThnszPMgqLzILBAAg8V2f+7THvCm/61SWLZn5TMWHfknkOVey/nFKNZABGgtwf94N8IzdVPYX5Zhi6D"),time.sleep(5)
+navegador.get("https://mqs.motorola.com/Collab_GridCpt/default.aspx?enc=Q5gvSdpkrSm4+XI8x/jp2w1wsPbDh0YekbsarrLd0Blcn34hpzKeSNIV4QWOaulvUIlOTwhQ4APoz8Zz4qCb+JXImScVswB7YzdY46WhVHwcsWP2uu4lBUvL6firmhxm")
+time.sleep(2)
 
-horario = navegador.find_element(By.ID,"TextBox6")
+while True:
+    try:
+        calendario = navegador.find_element(By.ID, "Image1")
+        calendario.click()
+        time.sleep(1)
+        today = navegador.find_element(By.ID,"calendarButtonExtender_today")
+        today.click()
+        time.sleep(1)
+        calendario2 = navegador.find_element(By.ID,"Image2")
+        calendario2.click(),time.sleep(1)
+        today2 = navegador.find_element(By.ID,"CalendarExtender1_today")
+        today2.click()
+        time.sleep(1)
 
-if horario == '00:00:00':
-    print
+    except:
+        time.sleep(2)
+    break
+
+horario = WebDriverWait(navegador, 10).until(
+    EC.element_to_be_clickable((By.ID, "TextBox6"))
+)
+horario.click()
+horario.send_keys(Keys.CONTROL, "a")
+horario.send_keys(Keys.DELETE)
+horario.send_keys("00:15:00")
+
+# Força o valor direto se a máscara do campo estiver interferindo.
+navegador.execute_script(
+    "arguments[0].value = arguments[1]; arguments[0].dispatchEvent(new Event('input')); arguments[0].dispatchEvent(new Event('change'));",
+    horario,
+    "00:15:00"
+)
+
+time.sleep(2)
+
+horario2 = WebDriverWait(navegador, 10).until(
+    EC.element_to_be_clickable((By.ID, "TextBox7"))
+)
+horario2.click()
+horario2.send_keys(Keys.CONTROL, "a")
+horario2.send_keys(Keys.DELETE)
+horario2.send_keys("15:30:00")
+
+# Força o valor direto se a máscara do campo estiver interferindo.
+navegador.execute_script(
+    "arguments[0].value = arguments[1]; arguments[0].dispatchEvent(new Event('input')); arguments[0].dispatchEvent(new Event('change'));",
+    horario2,
+    "15:30:00"
+)
+
+time.sleep(2)
+
+m = WebDriverWait(navegador, 15).until(
+    EC.element_to_be_clickable((By.ID, "TabContainer1_TabPanel1_ProcessSpecific"))
+)
+ActionChains(navegador).move_to_element(m).pause(0.3).click().perform()
+
+j = WebDriverWait(navegador, 15).until(
+    EC.element_to_be_clickable((By.ID, "TabContainer1_TabPanel1_ProcessList"))
+)
+try:
+    ActionChains(navegador).move_to_element(j).pause(0.3).click().perform()
+except Exception:
+    navegador.execute_script("arguments[0].click();", j)
+
+gerar_tabela = WebDriverWait(navegador, 15).until(
+    EC.element_to_be_clickable((By.ID, "Button3"))
+)
+gerar_tabela.click()
+time.sleep(10)
+  
