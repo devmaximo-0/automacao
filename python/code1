@@ -1,0 +1,35 @@
+import pandas as pd
+
+df_list = pd.read_html('MQSYIELD_060326_123704.xls')
+
+df = df_list[0]
+
+pd.set_option('display.max_rows', None)
+
+
+linhas = df['Family'].str.startswith('SYDNEY26_LATAM') # aqui ele faz a separação no datafreme para filtrar apenas as linhas que começam com "LAGOS"
+
+
+colunas = ['Process', 'Station', 'Family', 'Tot Handle']
+
+resultado1 = df.loc[linhas, colunas]
+
+# /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+# aqui vai ser a tabela do AVENGER26_LATAM  
+
+linhas = df['Family'].str.startswith('AVENGER26_LATAM') # aqui ele faz a separação no datafreme para filtrar apenas as linhas que começam com "LAGOS"
+
+
+colunas = ['Process', 'Station', 'Family', 'Tot Handle']
+
+resultado2 = df.loc[linhas, colunas]
+
+# /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+print(df.columns)
+print(f'tabela do SYDNEY 26 LATAM: {resultado1}')
+print(f'tabela do AVENGER26_LATAM: {resultado2}')
+# print(df['Process'].head(50))
+# print(df['Station'].head(50))
