@@ -1,0 +1,24 @@
+import pandas as pd
+
+df = pd.read_html('MQSYIELD_060326_123704.xls')[0]
+df_mqs = pd.DataFrame(df)
+df_mqs.to_excel('dados_finais.xlsx', index=False)
+
+colunas_remover = [
+    'Technology',
+    'PYield %',
+    'Prime Pass',
+    'Prime Fail',
+    'Prime Handle',
+    'TotYield %',
+    'Tot Pass',
+    'Tot Fail',
+    'Avg PASS Time'
+]
+
+pd.set_option('display.max_rows', None)
+
+df_limpo = df.drop(columns=colunas_remover)
+
+
+ 
