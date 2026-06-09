@@ -48,19 +48,23 @@ while True:
 horario = WebDriverWait(navegador, 10).until(
     EC.element_to_be_clickable((By.ID, "TextBox6"))
 )
+
 horario.click()
 horario.send_keys(Keys.CONTROL, "a")
 horario.send_keys(Keys.DELETE)
-horario.send_keys("00:15:00")
+horario.send_keys("06:15:00")
 
 # Força o valor direto se a máscara do campo estiver interferindo.
+
 navegador.execute_script(
     "arguments[0].value = arguments[1]; arguments[0].dispatchEvent(new Event('input')); arguments[0].dispatchEvent(new Event('change'));",
     horario,
-    "00:15:00"
+    "06:15:00"
 )
 
 time.sleep(2)
+
+# aqui configura o segundo horário, para pegar os dados do primeiro turno, que vai de 06:15 as 15:30 
 
 horario2 = WebDriverWait(navegador, 10).until(
     EC.element_to_be_clickable((By.ID, "TextBox7"))
@@ -68,33 +72,53 @@ horario2 = WebDriverWait(navegador, 10).until(
 horario2.click()
 horario2.send_keys(Keys.CONTROL, "a")
 horario2.send_keys(Keys.DELETE)
-horario2.send_keys("15:30:00")
+horario2.send_keys("15:15:00")
 
 # Força o valor direto se a máscara do campo estiver interferindo.
 navegador.execute_script(
     "arguments[0].value = arguments[1]; arguments[0].dispatchEvent(new Event('input')); arguments[0].dispatchEvent(new Event('change'));",
     horario2,
-    "15:30:00"
+    "15:15:00"
 )
 
-time.sleep(2)
+time.sleep(2) # aqui tem um tempo para c
 
-m = WebDriverWait(navegador, 15).until(
+botao_specific = WebDriverWait(navegador, 15).until(
     EC.element_to_be_clickable((By.ID, "TabContainer1_TabPanel1_ProcessSpecific"))
 )
-ActionChains(navegador).move_to_element(m).pause(0.3).click().perform()
 
-j = WebDriverWait(navegador, 15).until(
-    EC.element_to_be_clickable((By.ID, "TabContainer1_TabPanel1_ProcessList"))
-)
-try:
-    ActionChains(navegador).move_to_element(j).pause(0.3).click().perform()
-except Exception:
-    navegador.execute_script("arguments[0].click();", j)
+while True:
 
-gerar_tabela = WebDriverWait(navegador, 15).until(
-    EC.element_to_be_clickable((By.ID, "Button3"))
-)
-gerar_tabela.click()
-time.sleep(10)
+    try:
+        ActionChains(navegador).move_to_element(botao_specific).pause(0.3).click().perform()
+    except Exception:
+        navegador.execute_script("arguments[0].click();", botao_specific)
+
+    botao_all = navegador.find_element(By.ID, "TabContainer1_TabPanel1_ProcessAll")
+    botao_all.click()
+    time.sleep(2)
+    
+    botao_specific = WebDriverWait(navegador, 15).until(
+        EC.element_to_be_clickable((By.ID, "TabContainer1_TabPanel1_ProcessSpecific"))
+    )
+
+    ActionChains(navegador).move_to_element(botao_specific).pause(0.9).click().perform()
+    break
+  
+
+
+# j = WebDriverWait(navegador, 15).until(
+#     EC.element_to_be_clickable((By.ID, "TabContainer1_TabPanel1_ProcessList"))
+# )
+
+# try:
+#     ActionChains(navegador).move_to_element(j).pause(0.3).click().perform()
+# except Exception:
+#     navegador.execute_script("arguments[0].click();", j)
+
+# gerar_tabela = WebDriverWait(navegador, 15).until(
+#     EC.element_to_be_clickable((By.ID, "Button3"))
+# )
+# gerar_tabela.click()
+# time.sleep(10)
   
